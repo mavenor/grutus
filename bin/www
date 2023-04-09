@@ -16,6 +16,13 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
+ * Get host from environment and store in Express.
+ */
+
+var host = normalizeHost(process.env.HOST || 'localhost');
+app.set('host', host);
+
+/**
  * Create HTTP server.
  */
 

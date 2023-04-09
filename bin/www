@@ -19,8 +19,7 @@ app.set('port', port);
  * Get host from environment and store in Express.
  */
 
-var host = normalizeHost(process.env.HOST || 'localhost');
-app.set('host', host);
+app.set('host', process.env.HOST || 'localhost');
 
 /**
  * Create HTTP server.

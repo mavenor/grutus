@@ -3,16 +3,16 @@
 
 const express = require('express');
 const router = express.Router();
-const { google } = require('googleapis');
+const oauth2 = require('@googleapis/oauth2');
 
 // Initialise the OAuth2Client
-const oauth2Client = new google.auth.OAuth2(
+const oauth2Client = new oauth2.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
     process.env.GOOGLE_REDIRECT_URI
 );
 
-router.get('/oauth2_callback', (req, res) => {
+router.get('/oauth2-callback', (req, res) => {
 
     const code = req.query.code;
     if (code) {

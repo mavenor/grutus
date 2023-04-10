@@ -23,13 +23,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(apiRouter);
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/api", apiRouter);
 app.use("/register", registerRoute);
 app.use("/login", loginRoute);
-app.use("/webauthn-register", webauthnRoute);
-app.use("/webauthn-login", webauthnLoginRoute);
+app.use("/webauthn-login", webauthnRoute);
+app.use("/webauthn-register", webauthnLoginRoute);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");

@@ -1,27 +1,50 @@
 <!DOCTYPE html>
 <html>
+  <body></body>
   <script>
     const publicKeyCredentialCreationOptions = {
-      challenge: Uint8Array.from("randomStringFromServer", (c) => c.charCodeAt(0)),
+      challenge: Uint8Array.from('<%= challenge %>', (c) => c.charCodeAt(0)),
       rp: {
-        name: "meh",
+        name: "Brutus CIBR",
         id: "localhost",
       },
       user: {
-        id: Uint8Array.from("UZSL85T9AFC", (c) => c.charCodeAt(0)),
-        name: "lee@webauthn.guide",
-        displayName: "Lee",
+        id: Uint8Array.from("<%= credId %>", (c) => c.charCodeAt(0)),
+        name: '<%= email %>',
+        displayName: '<%= email %>',
       },
       pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-      authenticatorSelection: {
-        authenticatorAttachment: "cross-platform",
-      },
+      // authenticatorSelection: {
+      //   authenticatorAttachment: "cross-platform",
+      // },
       timeout: 60000,
       attestation: "direct",
     };
 
-    let credential = navigator.credentials.create({
+    navigator.credentials.create({
       publicKey: publicKeyCredentialCreationOptions,
+    }).then((creds) => {
+      document.write("Got creds! Email: " + '<%= email %>' + " ID: " + creds.id);
+      var form = document.createElement("form");
+      form.setAttribute("method", "POST");
+      form.setAttribute("action", "/register");
+      var input = document.createElement("input");
+      input.setAttribute("type", "hidden");
+      input.setAttribute("name", "id");
+      input.setAttribute("value", creds.id);
+      form.appendChild(input);
+
+      input = document.createElement("input");
+      input.setAttribute("type", "hidden");
+      input.setAttribute("name", "email");
+      input.setAttribute("value", '<%= email %>');
+      form.appendChild(input);
+
+      document.body.appendChild(form);
+      form.submit();
+    }).catch((err) => {
+      console.log(err);
+      document.write(err);
     });
   </script>
 </html>

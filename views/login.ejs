@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Login using Webauthn</h1>
+      <input type="email" placeholder="Enter Email" name="email" required />
+      <button class="auth-btn" id="webauthn">
+        <div class="auth-icon-wrapper">
+          <img class="auth-icon" src="images/webauthn.svg" alt="Google logo" />
+        </div>
+        <span class="btn-text">Login</span>
+      </button>
+    </div>
+
+    <script>
+      webauthnBtn.addEventListener("click", (e) => {
+        window.location.href = "http://localhost:3000/webauthn";
+      });
+    </script>
+  </body>
+</html>

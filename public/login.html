@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Login using Webauthn</h1>
+      <input type="email" placeholder="Enter Email" name="email" required />
+      <button class="auth-btn" id="webauthn">
+        <div class="auth-icon-wrapper">
+          <img class="auth-icon" src="../res/Logos/webauthn.svg" alt="Google logo" />
+        </div>
+        <span class="btn-text">Login</span>
+      </button>
+    </div>
+
+    <script>
+      const publicKeyCredentialRequestOptions = {
+        challenge: Uint8Array.from(randomStringFromServer, (c) => c.charCodeAt(0)),
+        allowCredentials: [
+          {
+            id: Uint8Array.from(credentialId, (c) => c.charCodeAt(0)),
+            type: "public-key",
+            transports: ["usb", "ble", "nfc"],
+          },
+        ],
+        timeout: 60000,
+      };
+
+      const assertion = navigator.credentials.get({
+        publicKey: publicKeyCredentialRequestOptions,
+      });
+
+      const webauthnBtn = document.getElementById("webauthn");
+
+      webauthnBtn.addEventListener("click", (e) => {
+        assertion = navigator.credentials.get({
+          publicKey: publicKeyCredentialRequestOptions,
+        });
+        console.log(assertion);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Registration Form</h1>
+      <button class="google-btn" id="google">
+        <div class="google-icon-wrapper">
+          <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo" />
+        </div>
+        <span class="btn-text">Sign in with Google</span>
+      </button>
+    </div>
+
+    <script>
+      const publicKeyCredentialCreationOptions = {
+        challenge: Uint8Array.from("randomStringFromServer", (c) => c.charCodeAt(0)),
+        rp: {
+          name: "meh",
+          id: "localhost",
+        },
+        user: {
+          id: Uint8Array.from("UZSL85T9AFC", (c) => c.charCodeAt(0)),
+          name: "lee@webauthn.guide",
+          displayName: "Lee",
+        },
+        pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+        authenticatorSelection: {
+          authenticatorAttachment: "cross-platform",
+        },
+        timeout: 60000,
+        attestation: "direct",
+      };
+
+      let credential;
+
+      const googleBtn = document.getElementById("google");
+
+      /*
+       * Create form to request access token from Google's OAuth 2.0 server.
+       */
+      function oauthSignIn() {
+        // Google's OAuth 2.0 endpoint for requesting an access token
+        var oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+
+        // Create <form> element to submit parameters to OAuth 2.0 endpoint.
+        var form = document.createElement("form");
+        form.setAttribute("method", "GET"); // Send as a GET request.
+        form.setAttribute("action", oauth2Endpoint);
+
+        // Parameters to pass to OAuth 2.0 endpoint.
+        var params = {
+          client_id: "158598437495-rqiev6oimddds3727sgv84p8q415seod.apps.googleusercontent.com",
+          redirect_uri: "http://localhost/oauth2-callback",
+          response_type: "code",
+          scope: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/cloudplatformorganizations.readonly",
+          include_granted_scopes: "true",
+        };
+
+        // Add form parameters as hidden input values.
+        for (var p in params) {
+          var input = document.createElement("input");
+          input.setAttribute("type", "hidden");
+          input.setAttribute("name", p);
+          input.setAttribute("value", params[p]);
+          form.appendChild(input);
+        }
+
+        // Add form to page and submit it to open the OAuth 2.0 endpoint.
+        document.body.appendChild(form);
+        form.submit();
+      }
+
+      googleBtn.addEventListener("click", (e) => {
+        // oauthSignIn();
+        credential = navigator.credentials.create({
+          publicKey: publicKeyCredentialCreationOptions,
+        });
+        console.log(credential);
+      });
+    </script>
+  </body>
+</html>

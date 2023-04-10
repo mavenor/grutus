@@ -8,7 +8,7 @@
     <div class="container">
       <h1>Login using Webauthn</h1>
       <input type="email" placeholder="Enter Email" name="email" required />
-      <button class="auth-btn" id="webauthn">
+      <button class="auth-btn" id="webauthnBtn">
         <div class="auth-icon-wrapper">
           <img class="auth-icon" src="images/webauthn.svg" alt="Google logo" />
         </div>
@@ -18,7 +18,7 @@
 
     <script>
       webauthnBtn.addEventListener("click", (e) => {
-        window.location.href = "http://localhost:3000/webauthn";
+        window.location.href = "http://localhost:3000/webauthn-login";
       });
     </script>
   </body>

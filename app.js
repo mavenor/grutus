@@ -9,6 +9,7 @@ const apiRouter = require("./routes/api");
 const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
 const webauthnRoute = require("./routes/webauthn");
+const webauthnLoginRoute = require("./routes/webauthn-login");
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api", apiRouter);
 app.use("/register", registerRoute);
 app.use("/login", loginRoute);
 app.use("/webauthn-register", webauthnRoute);
+app.use("/webauthn-login", webauthnLoginRoute);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");

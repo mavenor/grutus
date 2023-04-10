@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <script>
+    const publicKeyCredentialRequestOptions = {
+      challenge: Uint8Array.from("randomStringFromServer", (c) => c.charCodeAt(0)),
+      allowCredentials: [
+        {
+          id: Uint8Array.from("AReeJhKNImMGQhon4CLkhQUOkuqhLT8WTmb94hwSD2EuZ_krHIKt-E5PpcdX-FB-LpjGG0z0-xlaooAC-o6OQz8", (c) => c.charCodeAt(0)),
+          type: "public-key",
+          transports: ["ble", "nfc"],
+        },
+      ],
+      timeout: 60000,
+    };
+
+    const assertion = navigator.credentials.get({
+      publicKey: publicKeyCredentialRequestOptions,
+    });
+  </script>
+</html>

@@ -4,6 +4,8 @@
 const express = require('express');
 const router = express.Router();
 const oauth2 = require('@googleapis/oauth2');
+const { orgClient } = require('@google-cloud/resource-manager');
+
 
 // Initialise the OAuth2Client
 const oauth2Client = new oauth2.auth.OAuth2(
@@ -13,7 +15,14 @@ const oauth2Client = new oauth2.auth.OAuth2(
 );
 
 router.get('/oauth2-callback', (req, res) => {
-
+    if (!req.query.code) {
+        res.status(400).send('No code provided!');
+        if (req.query.error === 'access_denied') {
+            res.status(403).send('Access denied by the user!');
+            return;
+        }
+    }
+    
     const code = req.query.code;
     if (code) {
         oauth2Client.getToken(code, (err, tokens) => {
@@ -23,9 +32,35 @@ router.get('/oauth2-callback', (req, res) => {
                 return;
             }
             oauth2Client.setCredentials(tokens);
-            res.redirect('/api/success');
+            // Successfully retrieved the access token!
+            // Using the token to retrieve email address
+            
+            const resourceManager = new orgClient({
+                auth: oauth2Client
+            });
+            resourceManager.searchOrganizationsAsync({
+                query: 'domain:' + process.env.DOMAIN
+            }).then(
+                responses => {
+                    var domainFound = false;
+                    for (const response of responses) {
+                        if (response.domain === process.env.DOMAIN) {
+                            domainFound = true;
+                            break;
+                        }
+                    }
+                    if (domainFound) {
+                        // The user is a member of the domain
+                        res.redirect('/webauthn-register');
+                    } else {
+                        // The user is not a member of the domain
+                        res.status(403).send('Access denied! You are not a member of ' + process.env.DOMAIN + '!');
+                    }
+                }
+            )
         });
     }
+
 });
 
 module.exports = router;

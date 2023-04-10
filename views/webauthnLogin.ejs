@@ -5,16 +5,23 @@
       challenge: Uint8Array.from("randomStringFromServer", (c) => c.charCodeAt(0)),
       allowCredentials: [
         {
-          id: Uint8Array.from("AReeJhKNImMGQhon4CLkhQUOkuqhLT8WTmb94hwSD2EuZ_krHIKt-E5PpcdX-FB-LpjGG0z0-xlaooAC-o6OQz8", (c) => c.charCodeAt(0)),
+          id: Uint8Array.from('<%= credId %>', (c) => c.charCodeAt(0)),
           type: "public-key",
-          transports: ["ble", "nfc"],
+          authenticatorTransport: "cross-platform"
         },
       ],
       timeout: 60000,
     };
 
-    const assertion = navigator.credentials.get({
+    navigator.credentials.get({
       publicKey: publicKeyCredentialRequestOptions,
+    }).then((creds) => {
+      document.write("Device Validated");
+      window.location.href = "http://localhost:8501/";
+    
+    }).catch((err) => {
+      console.log(err);
+      document.write(err);
     });
   </script>
 </html>

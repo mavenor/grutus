@@ -16,6 +16,9 @@ router.get("/", function (req, res, next) {
       credId = row.id;
       res.render("webauthnLogin", { title: "WebAuthn Login", credId: credId });
       
+    } else {
+      console.log("User not found!");
+      res.status(404).send("User not found!");
     }
   });
 });

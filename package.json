@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/mavenor/grutus#readme",
   "dependencies": {
-    "@google-cloud/resource-manager": "^4.2.1",
+    "@google-cloud/resource-manager": "^5.1.0",
     "@googleapis/oauth2": "^1.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
